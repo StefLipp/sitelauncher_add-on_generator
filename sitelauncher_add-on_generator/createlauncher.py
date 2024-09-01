@@ -9,7 +9,7 @@ os.chdir(script_directory)
 
 print('Feel free to personalise the icon.png before configuring the add-on if need be.')
 
-# Asking site adress
+# Asking site address
 while True:
     VAR_URL= str(input('What is the address of the site in format https://www.example.com'))
     if VAR_URL.startswith('https://'):
