@@ -124,3 +124,4 @@ shutil.make_archive(f"{ADDON_ID}_zipped/{ADDON_ID}", 'zip', f"{ADDON_ID}")
 
 # Response
 print('Site launcher script was created and zipped succesfully.')
+print('You can now install the generated zip file as an add-on from within Kodi.')
