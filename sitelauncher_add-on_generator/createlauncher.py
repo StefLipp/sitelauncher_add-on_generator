@@ -13,36 +13,41 @@ print('Feel free to personalise the icon.png before configuring the add-on if ne
 
 # Asking site address
 while True:
-    VAR_URL= str(input('What is the address of the site in format https://www.example.com'))
+    VAR_URL= str(input('What is the address of the site in format https://www.example.com?: '))
     if VAR_URL.startswith('https://'):
         break
     elif VAR_URL.startswith('http://'):
         break
     else:
-        print("Invalid input. Please enter the address of the site in format https://www.example.com")
+        print("Invalid input. Please enter the address of the site in format https://www.example.com.: ")
 
 # Asking the site name
-SITE_NAME = str(input('What is the title of the site'))
+SITE_NAME = str(input('What is the title of the site?: '))
 
-#Asking wether they use Flatpak
+#Asking operating system and wether they use Flatpak
 while True:
-    VFLATPAK = input("Do you use the Flatpak version of Kodi? (y/n): ")
-    if VFLATPAK == "y":
+    OPSYS = input("Do you use Kodi on Windows or Linux? (Windows/Linux): ")
+    if OPSYS.lower() == "linux":
+        while True:
+            VFLATPAK = input("Do you use the Flatpak version of Kodi? (y/n): ")
+            if VFLATPAK == "y":
+                RUN_SCRIPT = ['flatpak-spawn', '--host', 'xdg-open', f'{VAR_URL}']
+                break
+            elif VFLATPAK == "n":
+                RUN_SCRIPT = ['xdg-open', f'{VAR_URL}']
+                break
+            else:
+                print("Invalid input. Please enter y/n: ")
         break
-    elif VFLATPAK == "n":
+    elif OPSYS.lower() == "windows":
+        RUN_SCRIPT = ['cmd', '/c', 'start', f'{VAR_URL}']
         break
     else:
-        print("Invalid input. Please enter y/n.")
+        print("Invalid input. Please enter Linux/Windows: ")
 
 # Declaring variables
 ADDON_NAME = f"{SITE_NAME} Web Launcher"
 ADDON_ID = f"script.{SITE_NAME}web"
-
-# Adapting script to Flatpak answer
-if VFLATPAK == 'y':
-    RUN_SCRIPT = ['flatpak-spawn', '--host', 'xdg-open', f'{VAR_URL}']
-else:
-    RUN_SCRIPT = ['xdg-open', f'{VAR_URL}']
 
 # Creating py file
 os.mkdir(f"{ADDON_ID}")
@@ -107,11 +112,15 @@ f2.write(f"""
 f2.close()
 
 # copy icons into folder and create ZIP
-source = 'icon.png'
-destination = f"./{ADDON_ID}/{ADDON_ID}/icon.png"
-shutil.copyfile(source, destination, follow_symlinks=True)
+try:
+    source = 'icon.png'
+    destination = f"./{ADDON_ID}/{ADDON_ID}/icon.png"
+    shutil.copyfile(source, destination, follow_symlinks=True)
+except Exception:
+    print('No icon.png provided, skipping step...')
+    pass
+
 shutil.make_archive(f"{ADDON_ID}_zipped/{ADDON_ID}", 'zip', f"{ADDON_ID}")
 
 # Response
 print('Site launcher script was created and zipped succesfully.')
-
