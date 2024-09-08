@@ -4,4 +4,4 @@ A python script to create a simple add-on for opening links in default browser f
 - Optional: Customise the icon.png file before executing the script
 - execute createlauncher.py with python
 - For use with Kodi Flatpak edition on Linux make sure D-Bus socket permissions are allowed via Flatseal
-- Install the zip file generated manually from within Kodi
+- Install the zip file generated, manually from within Kodi
